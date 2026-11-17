@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>email-header-check</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <nav><b>email-header-check</b></nav>
+
+  <h1>Who really sent this email?</h1>
+  <p class="lead">Paste an email's raw headers to see who actually sent it, whether it passed SPF, DKIM and DMARC,
+  and the route it took to reach you. Everything runs in your browser; nothing you paste is uploaded anywhere.</p>
+
+  <details class="howto">
+    <summary>How to get the headers</summary>
+    <ul>
+      <li><b>Gmail:</b> open the email → ⋮ menu → <i>Show original</i> → <i>Copy to clipboard</i>.</li>
+      <li><b>Outlook on the web:</b> open the email → ⋯ menu → <i>View</i> → <i>View message source</i>.</li>
+      <li><b>Outlook desktop:</b> open the email → <i>File</i> → <i>Properties</i> → copy <i>Internet headers</i>.</li>
+      <li><b>Apple Mail:</b> select the email → <i>View</i> → <i>Message</i> → <i>All Headers</i>.</li>
+      <li><b>Yahoo Mail:</b> open the email → ⋯ menu → <i>View raw message</i>.</li>
+    </ul>
+    <p>Pasting the whole message is fine too; everything after the headers is ignored.</p>
+  </details>
+
+  <textarea id="raw" rows="10" spellcheck="false" placeholder="Paste the headers here"></textarea>
+  <div class="actions">
+    <button id="analyze">Analyze</button>
+    <button id="ex-phish" class="secondary">Try a phishing example</button>
+    <button id="ex-legit" class="secondary">Try a normal example</button>
+    <button id="clear" class="secondary">Clear</button>
+    <span class="muted">The examples are made up.</span>
+  </div>
+
+  <p id="status"></p>
+
+  <div id="report" hidden>
+    <div id="verdict" class="verdict"></div>
+
+    <section>
+      <h2>Findings</h2>
+      <ul id="findings" class="findings"></ul>
+    </section>
+
+    <section>
+      <h2>Authentication</h2>
+      <p id="auth-source" class="muted"></p>
+      <table class="grid"><thead><tr><th>check</th><th>result</th><th>domain</th><th>notes</th></tr></thead><tbody id="auth"></tbody></table>
+    </section>
+
+    <section>
+      <h2>Sender details</h2>
+      <table class="grid kv"><tbody id="addresses"></tbody></table>
+    </section>
+
+    <section>
+      <h2>Route</h2>
+      <p class="muted">Oldest hop first: where the message started, to where it was delivered.</p>
+      <div class="table-wrap">
+        <table class="grid"><thead><tr><th>#</th><th>from</th><th>IP</th><th>received by</th><th>with</th><th>time (UTC)</th><th>delay</th></tr></thead><tbody id="route"></tbody></table>
+      </div>
+      <p id="origin" class="muted"></p>
+    </section>
+
+    <details>
+      <summary>All headers (<span id="header-count"></span>)</summary>
+      <div class="table-wrap"><table class="grid kv"><tbody id="all-headers"></tbody></table></div>
+    </details>
+  </div>
+
+  <footer>
+    Headers can show who sent a message and how it travelled, but they can't prove an email is safe.
+    Check links and attachments separately. <a href="https://github.com/appu-019/email-header-check">Source</a>.
+  </footer>
+</main>
+<script src="js/headers.js"></script>
+<script src="js/analyze.js"></script>
+<script src="js/examples.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
